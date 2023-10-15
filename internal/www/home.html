@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://unpkg.com/htmx.org@1.9.6"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+</head>
+<body>
+    <div>
+        <h1>Hello {{ .Name }}!</h1>
+        <div hx-get="/dice" hx-trigger="every 2s" hx-swap="innerHTML">
+            Here are dice results
+        </div>
+        <button hx-get="/users" hx-trigger="click" hx-target="#users-section" hx-swap="innerHTML">
+            Get test users
+        </button>
+        <div id="users-section"></div>
+    </div>
+</body>
+</html>
