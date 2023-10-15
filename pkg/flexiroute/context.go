@@ -56,13 +56,13 @@ func (ctx *Context) WriteJSON(statusCode int, v any) error {
 	return json.NewEncoder(ctx.w).Encode(v)
 }
 
-func (ctx *Context) AllowMethod(method HttpMethod) bool {
+func (ctx *Context) AllowMethod(method string) bool {
 	if ctx.r.Method != string(method) {
 		errMsg := map[string]string{
 			"error":  fmt.Sprintf("%v method not allowed", ctx.r.Method),
 			"detail": fmt.Sprintf("Only %v method is allowed", method),
 		}
-		_ = ctx.WriteJSON(http.StatusBadRequest, errMsg)
+		_ = ctx.WriteJSON(http.StatusMethodNotAllowed, errMsg)
 		return false
 	}
 	return true

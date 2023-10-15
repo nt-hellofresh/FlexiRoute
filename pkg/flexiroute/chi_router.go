@@ -13,7 +13,7 @@ type ChiRouterFacade struct {
 	namespaces []*ChiRouterFacade
 }
 
-func NewChiRouter() *ChiRouterFacade {
+func NewChiRouter() RouterFacade {
 	return &ChiRouterFacade{}
 }
 
@@ -42,10 +42,10 @@ func (r *ChiRouterFacade) LoadTemplates(directory string) {
 	}
 }
 
-func (r *ChiRouterFacade) ServeHTTP(addr string) error {
+func (r *ChiRouterFacade) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	app := chi.NewRouter()
 	r.buildRoutes(app)
-	return http.ListenAndServe(addr, app)
+	app.ServeHTTP(w, req)
 }
 
 func (r *ChiRouterFacade) buildRoutes(app *chi.Mux) {
@@ -74,15 +74,15 @@ func (r *ChiRouterFacade) buildRoutes(app *chi.Mux) {
 func (r *ChiRouterFacade) registerEndpoint(app chi.Router, path string, route *ApiRoute) {
 	handler := route.ToHandlerFunc(r.templates)
 	switch route.Method() {
-	case GET:
+	case http.MethodGet:
 		app.Get(path, handler)
-	case PUT:
+	case http.MethodPut:
 		app.Put(path, handler)
-	case PATCH:
+	case http.MethodPatch:
 		app.Patch(path, handler)
-	case POST:
+	case http.MethodPost:
 		app.Post(path, handler)
-	case DELETE:
+	case http.MethodDelete:
 		app.Delete(path, handler)
 	default:
 		log.Fatalf("unsupported method")

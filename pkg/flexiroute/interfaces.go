@@ -1,5 +1,7 @@
 package flexiroute
 
+import "net/http"
+
 type RouterFacade interface {
 	Namespace(name string) RouterFacade
 	Use(fn Middleware)
@@ -9,5 +11,8 @@ type RouterFacade interface {
 	Post(pattern string, handler ApiHandler)
 	Delete(pattern string, handler ApiHandler)
 	LoadTemplates(directory string)
-	ServeHTTP(addr string) error
+	http.Handler
 }
+
+type ApiHandler func(ctx *Context) error
+type Middleware func(handler ApiHandler) ApiHandler

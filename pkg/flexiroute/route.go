@@ -8,10 +8,10 @@ import (
 type ApiRoute struct {
 	pattern string
 	handler ApiHandler
-	method  HttpMethod
+	method  string
 }
 
-func NewApiRoute(pattern string, handler ApiHandler, method HttpMethod) *ApiRoute {
+func NewApiRoute(pattern string, handler ApiHandler, method string) *ApiRoute {
 	return &ApiRoute{
 		pattern: pattern,
 		handler: handler,
@@ -27,7 +27,7 @@ func (route *ApiRoute) Path() string {
 	return route.pattern
 }
 
-func (route *ApiRoute) Method() HttpMethod {
+func (route *ApiRoute) Method() string {
 	return route.method
 }
 

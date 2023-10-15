@@ -4,6 +4,7 @@ import (
 	"github.com/nt-hellofresh/flexiroute/internal"
 	"github.com/nt-hellofresh/flexiroute/pkg/flexiroute"
 	"log"
+	"net/http"
 )
 
 func main() {
@@ -12,7 +13,7 @@ func main() {
 
 	app := createApp()
 
-	if err := app.ServeHTTP(":5001"); err != nil {
+	if err := http.ListenAndServe(":5001", app); err != nil {
 		log.Fatalf("Failed to start server, %v", err.Error())
 	}
 }

@@ -12,7 +12,7 @@ type DefaultRouterFacade struct {
 	namespaces []*DefaultRouterFacade
 }
 
-func NewDefaultRouter() *DefaultRouterFacade {
+func NewDefaultRouter() RouterFacade {
 	return &DefaultRouterFacade{}
 }
 
@@ -41,7 +41,7 @@ func (r *DefaultRouterFacade) LoadTemplates(directory string) {
 	}
 }
 
-func (r *DefaultRouterFacade) buildRoutes() {
+func (r *DefaultRouterFacade) buildRoutes(mux *http.ServeMux) {
 	for _, route := range r.routes {
 		for _, mw := range r.middlewares {
 			route.WithMiddleWare(mw)
@@ -52,15 +52,16 @@ func (r *DefaultRouterFacade) buildRoutes() {
 			path = fmt.Sprintf("/%v%v", r.name, route.Path())
 		}
 
-		http.HandleFunc(path, route.ToHandlerFunc(r.templates))
+		mux.HandleFunc(path, route.ToHandlerFunc(r.templates))
 	}
 
 	for _, ns := range r.namespaces {
-		ns.buildRoutes()
+		ns.buildRoutes(mux)
 	}
 }
 
-func (r *DefaultRouterFacade) ServeHTTP(addr string) error {
-	r.buildRoutes()
-	return http.ListenAndServe(addr, nil)
+func (r *DefaultRouterFacade) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	mux := http.NewServeMux()
+	r.buildRoutes(mux)
+	mux.ServeHTTP(w, req)
 }
