@@ -4,7 +4,7 @@ FlexiRoute is a Golang library designed to provide developers with the flexibili
 
 ## Features
 
-- **Framework Agnostic**: FlexiRoute allows you to choose the web framework that suits your project's needs (currently only Gin and native http supported).
+- **Framework Agnostic**: FlexiRoute allows you to choose the web framework that suits your project's needs (currently only go-chi and native http supported).
 
 - **Route Abstraction**: With FlexiRoute, you can define your routes and handlers using a consistent and framework-agnostic approach.
 
