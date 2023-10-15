@@ -1,10 +1,10 @@
 # FlexiRoute
 
-FlexiRoute is a Golang library designed to provide developers with the flexibility when choosing or switching underlying web frameworks for their projects. This library simplifies the process of swapping out web frameworks without the need to alter the implementation of routes, handler signatures, middleware registration, and more.
+FlexiRoute is a library designed to provide developers with the flexibility when choosing or switching underlying web frameworks for their projects. This library simplifies the process of swapping out web frameworks without the need to alter the implementation of routes, handler signatures, middleware registration, and more.
 
 ## Features
 
-- **Framework Agnostic**: FlexiRoute allows you to choose the web framework that suits your project's needs (currently only [chi](https://github.com/go-chi/chi) and native http supported).
+- **Framework Agnostic**: FlexiRoute allows you to choose the web framework that suits your project's needs of minimal features (currently only [chi](https://github.com/go-chi/chi) and the standard http library are supported).
 
 - **Route Abstraction**: With FlexiRoute, you can define your routes and handlers using a consistent and framework-agnostic approach.
 
@@ -24,13 +24,13 @@ go get github.com/nt-hellofresh/flexiroute
 
 See [configuration](internal/configure.go) how to bootstrap a FlexiRoute router.
 
-See [here](cmd/default/main.go) for using the native go library as the underlying web framework.
+See [here](cmd/default/main.go) for using the standard go library as the underlying web framework.
 
 See [here](cmd/chi/main.go) for using go chi as the underlying web framework.
 
 ## Contributing
 
-This project is not actively maintained and was simply created out of a weekend of experimentation building a basic web framework of my own. It serves as a reference and a source of inspiration for other contributors whom wish to fork from it.
+This project is not actively maintained and was simply created out of a weekend session of experimentation, building a basic web framework of my own. It serves as a reference and a source of inspiration for other contributors whom wish to fork from it.
 
 ## License
 
