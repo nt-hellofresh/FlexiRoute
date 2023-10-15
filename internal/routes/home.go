@@ -13,10 +13,10 @@ type user struct {
 
 func getUsers() []user {
 	return []user{
-		user{Name: "Teddy", Age: 24},
-		user{Name: "Sally", Age: 20},
-		user{Name: "Herschel", Age: 52},
-		user{Name: "Mary", Age: 39},
+		{Name: "Teddy", Age: 24},
+		{Name: "Sally", Age: 20},
+		{Name: "Herschel", Age: 52},
+		{Name: "Mary", Age: 39},
 	}
 }
 
