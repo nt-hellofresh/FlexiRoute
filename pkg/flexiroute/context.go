@@ -51,7 +51,7 @@ func (ctx *Context) RequestURL() *url.URL {
 }
 
 func (ctx *Context) WriteJSON(statusCode int, v any) error {
-	ctx.w.Header().Add("Content-Type", "application/json")
+	ctx.w.Header().Set("Content-Type", "application/json")
 	ctx.w.WriteHeader(statusCode)
 	return json.NewEncoder(ctx.w).Encode(v)
 }
