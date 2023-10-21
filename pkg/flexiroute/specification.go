@@ -18,6 +18,17 @@ type RouteSpecification struct {
 	templates    *template.Template
 }
 
+func NewRouteSpec(opts ...RouteSpecOpts) *RouteSpecification {
+	rs := defaultRouteSpec("")
+
+	for _, opt := range opts {
+		opt(rs)
+	}
+
+	rs.loadTemplates()
+	return rs
+}
+
 func (rs *RouteSpecification) loadTemplates() {
 	templates, err := template.ParseGlob(rs.templatesDir)
 
