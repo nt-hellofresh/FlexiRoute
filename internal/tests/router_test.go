@@ -8,20 +8,20 @@ import (
 	"testing"
 )
 
-func testCase(t *testing.T, fn func() flexiroute.RouterFacade, description string) testServer {
+type RouteBuilder func(opts ...flexiroute.RouteSpecOpts) http.Handler
+
+func testCase(t *testing.T, fn RouteBuilder, description string) testServer {
 	t.Helper()
-	router := fn()
-	internal.Configure(router)
 	return testServer{
-		handler:     router,
+		handler:     fn(internal.Specification()...),
 		description: description,
 	}
 }
 
 func TestFlexiRouter(t *testing.T) {
 	for _, server := range []testServer{
-		testCase(t, flexiroute.NewDefaultRouter, "using standard library router facade"),
-		testCase(t, flexiroute.NewChiRouter, "using chi router facade"),
+		testCase(t, flexiroute.BuildStdLibHandler, "using standard library router"),
+		testCase(t, flexiroute.BuildChiHandler, "using chi router"),
 	} {
 		t.Run(server.description, func(t *testing.T) {
 			t.Run("requesting index", func(t *testing.T) {

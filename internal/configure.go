@@ -6,15 +6,15 @@ import (
 	"github.com/nt-hellofresh/flexiroute/pkg/flexiroute"
 )
 
-func Configure(router flexiroute.RouterFacade) {
-	router.Use(middleware.LoggingMiddleware)
-
-	router.Get("/", routes.HomeHandler)
-	router.Get("/dice", routes.RandomNumberHandler)
-
-	users := router.Namespace("users")
-	users.Get("/", routes.GetUsersHandler)
-	users.Put("/test", routes.PutHandler)
-
-	router.LoadTemplates("internal/www/*.html")
+func Specification() []flexiroute.RouteSpecOpts {
+	return []flexiroute.RouteSpecOpts{
+		flexiroute.HtmlTemplatesDir("internal/www/*.html"),
+		flexiroute.Use(middleware.LoggingMiddleware),
+		flexiroute.Get("/", routes.HomeHandler),
+		flexiroute.Get("/dice", routes.RandomNumberHandler),
+		flexiroute.Namespace("users",
+			flexiroute.Get("/", routes.GetUsersHandler),
+			flexiroute.Put("/test", routes.PutHandler),
+		),
+	}
 }
