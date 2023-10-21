@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func NewStdLibHandler(opts ...RouteSpecOpts) http.Handler {
+func BuildStdLibHandler(opts ...RouteSpecOpts) http.Handler {
 	rs := defaultRouteSpec("")
 
 	for _, opt := range opts {

@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func NewChiHandler(opts ...RouteSpecOpts) http.Handler {
+func BuildChiHandler(opts ...RouteSpecOpts) http.Handler {
 	rs := NewRouteSpec(opts...)
 	app := chi.NewRouter()
 	buildChiRoutes(rs, app)
