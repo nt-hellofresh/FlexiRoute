@@ -11,15 +11,9 @@ func main() {
 	log.Println("Starting server on port 5001...")
 	log.Println("http://localhost:5001")
 
-	app := createApp()
+	handler := flexiroute.NewStdLibHandler(internal.Specification()...)
 
-	if err := http.ListenAndServe(":5001", app); err != nil {
+	if err := http.ListenAndServe(":5001", handler); err != nil {
 		log.Fatalf("Failed to start server, %v", err.Error())
 	}
-}
-
-func createApp() flexiroute.RouterFacade {
-	router := flexiroute.NewDefaultRouter()
-	internal.Configure(router)
-	return router
 }

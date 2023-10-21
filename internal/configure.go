@@ -18,3 +18,16 @@ func Configure(router flexiroute.RouterFacade) {
 
 	router.LoadTemplates("internal/www/*.html")
 }
+
+func Specification() []flexiroute.RouteSpecOpts {
+	return []flexiroute.RouteSpecOpts{
+		flexiroute.HtmlTemplatesDir("internal/www/*.html"),
+		flexiroute.Use(middleware.LoggingMiddleware),
+		flexiroute.Get("/", routes.HomeHandler),
+		flexiroute.Get("/dice", routes.RandomNumberHandler),
+		flexiroute.Namespace("users",
+			flexiroute.Get("/", routes.GetUsersHandler),
+			flexiroute.Put("/test", routes.PutHandler),
+		),
+	}
+}
