@@ -32,19 +32,5 @@ func (route *ApiRoute) Method() string {
 }
 
 func (route *ApiRoute) ToHandlerFunc(templates *template.Template) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		ctx := NewContext(
-			WithReaderWriter(w, r),
-			WithHtmlTemplate(templates),
-		)
-
-		if ok := ctx.AllowMethod(route.method); !ok {
-			return
-		}
-
-		if err := route.handler(ctx); err != nil {
-			errMsg := map[string]string{"error": "An error occurred", "detail": err.Error()}
-			_ = ctx.WriteJSON(http.StatusInternalServerError, errMsg)
-		}
-	}
+	return route.handler.ToHandlerFunc(route.method, templates)
 }

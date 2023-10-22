@@ -3,6 +3,7 @@ package flexiroute
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
+	"html/template"
 	"log"
 	"net/http"
 )
@@ -15,30 +16,26 @@ func BuildChiHandler(opts ...RouteSpecOpts) http.Handler {
 }
 
 func buildChiRoutes(rs *RouteSpecification, router chi.Router) {
+	for _, mw := range rs.middlewares {
+		router.Use(mw.ToHandler())
+	}
 	for _, route := range rs.routes {
-		for _, mw := range rs.middlewares {
-			route.WithMiddleWare(mw)
-		}
-
-		registerEndpoint(rs, router, route)
+		registerEndpoint(rs.templates, router, route)
 	}
 
 	for _, ns := range rs.subRoutes {
-		buildChiRoutes(ns, router)
+		router.Group(func(r chi.Router) {
+			r.Route(fmt.Sprintf("/%v", ns.name), func(r chi.Router) {
+				buildChiRoutes(ns, r)
+			})
+		})
 	}
 }
 
-func registerEndpoint(rs *RouteSpecification, app chi.Router, route *ApiRoute) {
+func registerEndpoint(templates *template.Template, app chi.Router, route *ApiRoute) {
 	path := route.Path()
+	handler := route.ToHandlerFunc(templates)
 
-	if rs.name != "" {
-		// Slightly cheating here as proper nested chi routes aren't
-		// really utilised. Instead, the fully qualified path is
-		// registered with the application.
-		path = fmt.Sprintf("/%v%v", rs.name, route.Path())
-	}
-
-	handler := route.ToHandlerFunc(rs.templates)
 	switch route.Method() {
 	case http.MethodGet:
 		app.Get(path, handler)
